@@ -10,6 +10,7 @@ package:
     - maybe
     - node-process
     - prelude
+    - random
     - transformers
   test:
     main: Test.Main

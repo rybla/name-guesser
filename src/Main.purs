@@ -6,19 +6,22 @@ import Control.Monad.State (get, modify_)
 import Control.Plus (empty)
 import Data.Array as Array
 import Data.Bifunctor (rmap)
-import Data.Maybe (Maybe(..), isNothing)
+import Data.Maybe (Maybe(..), fromMaybe', isNothing)
+import Data.String as String
 import Data.Tuple.Nested (type (/\), (/\))
 import Debug as Debug
 import Effect (Effect)
 import Effect.Aff (Aff)
 import Effect.Class (liftEffect)
 import Effect.Class.Console as Console
+import Effect.Random (randomInt)
 import Halogen as H
 import Halogen.Aff as HA
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
 import Halogen.VDom.Driver as HVD
+import Partial.Unsafe (unsafeCrashWith)
 import Questions (Question, initialQuestions)
 import Translation (untranslate)
 import Web.UIEvent.MouseEvent (MouseEvent)
@@ -68,7 +71,14 @@ component = H.mkComponent { initialState, eval, render }
   handleAction :: Action -> HM Unit
   handleAction = case _ of
     Initialize -> do
-      name <- getName # map untranslate # liftEffect
+      name <- do
+        name <- getName # map untranslate # liftEffect
+        if String.null name then do
+          let names = [ "Albert", "Kelly", "Jo", "Bob", "Kim", "Abdul", "Ryan", "Joseph", "Jacob", "Benny" ]
+          i <- randomInt 0 (Array.length names - 1) # liftEffect
+          names Array.!! i # fromMaybe' (\_ -> unsafeCrashWith "impossible") # pure
+        else
+          pure name
       let k = 4
       let futureQuestions = initialQuestions # getRandomSubset k
       -- let futureQuestions = initialQuestions

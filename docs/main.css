@@ -24,6 +24,7 @@ body {
 
 .status {
   flex-grow: 1;
+  padding: 0.5em;
   display: flex;
   flex-direction: column;
   gap: 1em;

@@ -2,7 +2,7 @@ const urlParams = new URLSearchParams(window.location.search);
 
 export const getName = () => {
   const n = urlParams.get('q');
-  return n === null ? "Henry" : n
+  return n === null ? "" : n
 }
 
 export const getRandomSubset = (k) => (array) => {

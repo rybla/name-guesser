@@ -4,7 +4,7 @@
   var urlParams = new URLSearchParams(window.location.search);
   var getName = () => {
     const n = urlParams.get("q");
-    return n === null ? "Henry" : n;
+    return n === null ? "" : n;
   };
   var getRandomSubset = (k) => (array) => {
     const n = array.length;
@@ -200,6 +200,8 @@
   };
 
   // output/Data.Bounded/foreign.js
+  var topInt = 2147483647;
+  var bottomInt = -2147483648;
   var topChar = String.fromCharCode(65535);
   var bottomChar = String.fromCharCode(0);
   var topNumber = Number.POSITIVE_INFINITY;
@@ -294,6 +296,21 @@
   }();
   var compare = function(dict) {
     return dict.compare;
+  };
+
+  // output/Data.Bounded/index.js
+  var top = function(dict) {
+    return dict.top;
+  };
+  var boundedInt = {
+    top: topInt,
+    bottom: bottomInt,
+    Ord0: function() {
+      return ordInt;
+    }
+  };
+  var bottom = function(dict) {
+    return dict.bottom;
   };
 
   // output/Data.Show/foreign.js
@@ -762,6 +779,21 @@
       }
     };
   };
+  var maybe$prime = function(v) {
+    return function(v1) {
+      return function(v2) {
+        if (v2 instanceof Nothing) {
+          return v(unit);
+        }
+        ;
+        if (v2 instanceof Just) {
+          return v1(v2.value0);
+        }
+        ;
+        throw new Error("Failed pattern match at Data.Maybe (line 250, column 1 - line 250, column 62): " + [v.constructor.name, v1.constructor.name, v2.constructor.name]);
+      };
+    };
+  };
   var maybe = function(v) {
     return function(v1) {
       return function(v2) {
@@ -791,6 +823,9 @@
     }
   };
   var map2 = /* @__PURE__ */ map(functorMaybe);
+  var fromMaybe$prime = function(a2) {
+    return maybe$prime(a2)(identity3);
+  };
   var fromMaybe = function(a2) {
     return maybe(a2)(identity3);
   };
@@ -1427,8 +1462,8 @@
         return function(pure10) {
           return function(f) {
             return function(array) {
-              function go2(bot, top2) {
-                switch (top2 - bot) {
+              function go2(bot, top3) {
+                switch (top3 - bot) {
                   case 0:
                     return pure10([]);
                   case 1:
@@ -1438,8 +1473,8 @@
                   case 3:
                     return apply3(apply3(map20(array3)(f(array[bot])))(f(array[bot + 1])))(f(array[bot + 2]));
                   default:
-                    var pivot = bot + Math.floor((top2 - bot) / 4) * 2;
-                    return apply3(map20(concat2)(go2(bot, pivot)))(go2(pivot, top2));
+                    var pivot = bot + Math.floor((top3 - bot) / 4) * 2;
+                    return apply3(map20(concat2)(go2(bot, pivot)))(go2(pivot, top3));
                 }
               }
               return go2(0, array.length);
@@ -1529,6 +1564,18 @@
     return function(xs) {
       return append2([x])(xs);
     };
+  };
+
+  // output/Data.String.Common/foreign.js
+  var joinWith = function(s) {
+    return function(xs) {
+      return xs.join(s);
+    };
+  };
+
+  // output/Data.String.Common/index.js
+  var $$null2 = function(s) {
+    return s === "";
   };
 
   // output/Debug/foreign.js
@@ -2844,6 +2891,65 @@
     };
   };
 
+  // output/Effect.Random/foreign.js
+  var random = Math.random;
+
+  // output/Data.Int/foreign.js
+  var fromNumberImpl = function(just) {
+    return function(nothing) {
+      return function(n) {
+        return (n | 0) === n ? just(n) : nothing;
+      };
+    };
+  };
+  var toNumber = function(n) {
+    return n;
+  };
+
+  // output/Data.Number/foreign.js
+  var isFiniteImpl = isFinite;
+  var floor = Math.floor;
+
+  // output/Data.Int/index.js
+  var top2 = /* @__PURE__ */ top(boundedInt);
+  var bottom2 = /* @__PURE__ */ bottom(boundedInt);
+  var fromNumber = /* @__PURE__ */ function() {
+    return fromNumberImpl(Just.create)(Nothing.value);
+  }();
+  var unsafeClamp = function(x) {
+    if (!isFiniteImpl(x)) {
+      return 0;
+    }
+    ;
+    if (x >= toNumber(top2)) {
+      return top2;
+    }
+    ;
+    if (x <= toNumber(bottom2)) {
+      return bottom2;
+    }
+    ;
+    if (otherwise) {
+      return fromMaybe(0)(fromNumber(x));
+    }
+    ;
+    throw new Error("Failed pattern match at Data.Int (line 72, column 1 - line 72, column 29): " + [x.constructor.name]);
+  };
+  var floor2 = function($39) {
+    return unsafeClamp(floor($39));
+  };
+
+  // output/Effect.Random/index.js
+  var randomInt = function(low2) {
+    return function(high2) {
+      return function __do2() {
+        var n = random();
+        var asNumber = (toNumber(high2) - toNumber(low2) + 1) * n + toNumber(low2);
+        return floor2(asNumber);
+      };
+    };
+  };
+
   // output/Web.DOM.ParentNode/foreign.js
   var getEffProp = function(name15) {
     return function(node) {
@@ -3753,13 +3859,6 @@
   };
   var empty3 = empty2;
 
-  // output/Data.String.Common/foreign.js
-  var joinWith = function(s) {
-    return function(xs) {
-      return xs.join(s);
-    };
-  };
-
   // output/Halogen.Query.Input/index.js
   var RefUpdate = /* @__PURE__ */ function() {
     function RefUpdate2(value0, value1) {
@@ -4451,7 +4550,7 @@
     };
     return go2(Nil.value);
   }();
-  var $$null2 = function(v) {
+  var $$null3 = function(v) {
     if (v instanceof Nil) {
       return true;
     }
@@ -5071,7 +5170,7 @@
       return new CatQueue(v.value0, new Cons(a2, v.value1));
     };
   };
-  var $$null3 = function(v) {
+  var $$null4 = function(v) {
     if (v.value0 instanceof Nil && v.value1 instanceof Nil) {
       return true;
     }
@@ -5197,7 +5296,7 @@
     ;
     if (v instanceof CatCons) {
       return new Just(new Tuple(v.value0, function() {
-        var $66 = $$null3(v.value1);
+        var $66 = $$null4(v.value1);
         if ($66) {
           return CatNil.value;
         }
@@ -6431,7 +6530,7 @@
                     };
                   }())(handlers)();
                   var mmore = read(v.pendingHandlers)();
-                  var $52 = maybe(false)($$null2)(mmore);
+                  var $52 = maybe(false)($$null3)(mmore);
                   if ($52) {
                     return voidLeft3(write(Nothing.value)(v.pendingHandlers))(new Done(unit))();
                   }
@@ -6875,15 +6974,15 @@
   var monadEffectHalogenM2 = /* @__PURE__ */ monadEffectHalogenM(monadEffectAff);
   var liftEffect7 = /* @__PURE__ */ liftEffect(monadEffectHalogenM2);
   var map18 = /* @__PURE__ */ map(functorEffect);
+  var pure9 = /* @__PURE__ */ pure(applicativeHalogenM);
   var modify_3 = /* @__PURE__ */ modify_(monadStateHalogenM);
   var map19 = /* @__PURE__ */ map(functorArray);
   var map23 = /* @__PURE__ */ map(functorMaybe);
   var rmap2 = /* @__PURE__ */ rmap(bifunctorTuple);
-  var pure9 = /* @__PURE__ */ pure(applicativeMaybe);
+  var pure13 = /* @__PURE__ */ pure(applicativeMaybe);
   var discard5 = /* @__PURE__ */ discard(discardUnit)(bindHalogenM);
   var log4 = /* @__PURE__ */ log2(monadEffectHalogenM2);
   var get2 = /* @__PURE__ */ get(monadStateHalogenM);
-  var pure13 = /* @__PURE__ */ pure(applicativeHalogenM);
   var empty7 = /* @__PURE__ */ empty(plusMaybe);
   var mempty2 = /* @__PURE__ */ mempty(monoidArray);
   var Initialize2 = /* @__PURE__ */ function() {
@@ -6931,16 +7030,16 @@
       return div2([classes(["status", "question"])])([div2([classes(["prompt"])])([text5(question.prompt)]), div2([classes(["answers"])])(mapWithIndex2(function(i$prime) {
         return function(answer) {
           return div2([classes(fold3([["answer"], function() {
-            var $73 = eq2(mb_i)(new Just(i$prime));
-            if ($73) {
+            var $75 = eq2(mb_i)(new Just(i$prime));
+            if ($75) {
               return ["selected"];
             }
             ;
             return [];
           }()])), onClick(function() {
-            var $135 = SelectAnswer.create(i$prime);
-            return function($136) {
-              return $135(Just.create($136));
+            var $138 = SelectAnswer.create(i$prime);
+            return function($139) {
+              return $138(Just.create($139));
             };
           }())])([text5(answer)]);
         };
@@ -6952,33 +7051,33 @@
       return trace2(show2(state3))(function(v) {
         return div2([classes(["app"])])(fold3([[div2([classes(["title"])])([text5("name-guesser")])], function() {
           if (state3.maybe_currentQuestion instanceof Nothing) {
-            var $75 = $$null(state3.futureQuestions);
-            if ($75) {
-              return [div2([classes(["status"])])([div2([])([text5("All done!")]), div2([])([text5("Your name is:")]), div2([classes(["name"])])([text5('"' + (state3.name + '"'))])])];
+            var $77 = $$null(state3.futureQuestions);
+            if ($77) {
+              return [div2([classes(["status"])])([div2([])([text5("All done!")]), div2([])([text5("Your name must be:")]), div2([classes(["name"])])([text5('"' + (state3.name + '"'))])])];
             }
             ;
-            return [div2([classes(["status"])])([text5('Click "start" to start')])];
+            return [div2([classes(["status"])])([div2([])([text5("I will as you a series of 4 questions in order to infer your name.")]), div2([])([text5('Click "start" to start')])])];
           }
           ;
           if (state3.maybe_currentQuestion instanceof Just) {
             return [renderQuestion(state3.maybe_currentQuestion.value0.value1)(state3.maybe_currentQuestion.value0.value0)];
           }
           ;
-          throw new Error("Failed pattern match at Main (line 136, column 13 - line 151, column 18): " + [state3.maybe_currentQuestion.constructor.name]);
+          throw new Error("Failed pattern match at Main (line 146, column 13 - line 163, column 18): " + [state3.maybe_currentQuestion.constructor.name]);
         }(), [div2([classes(["controls"])])([div2([classes(fold3([["control"], function() {
-          var $79 = $$null(state3.pastQuestions);
-          if ($79) {
+          var $81 = $$null(state3.pastQuestions);
+          if ($81) {
             return ["inactive"];
           }
           ;
-          var $80 = isNothing(state3.maybe_currentQuestion) && $$null(state3.futureQuestions);
-          if ($80) {
+          var $82 = isNothing(state3.maybe_currentQuestion) && $$null(state3.futureQuestions);
+          if ($82) {
             return ["inactive"];
           }
           ;
           return ["active"];
-        }()])), onClick(function($137) {
-          return BackQuestion.create(Just.create($137));
+        }()])), onClick(function($140) {
+          return BackQuestion.create(Just.create($140));
         })])([text5("back")]), div2([classes(fold3([["control"], function() {
           if (state3.maybe_currentQuestion instanceof Just && state3.maybe_currentQuestion.value0.value1 instanceof Just) {
             return ["active"];
@@ -6989,16 +7088,16 @@
           }
           ;
           return ["inactive"];
-        }()])), onClick(function($138) {
-          return NextQuestion.create(Just.create($138));
+        }()])), onClick(function($141) {
+          return NextQuestion.create(Just.create($141));
         })])(function() {
-          var $86 = isNothing(state3.maybe_currentQuestion) && $$null(state3.pastQuestions);
-          if ($86) {
+          var $88 = isNothing(state3.maybe_currentQuestion) && $$null(state3.pastQuestions);
+          if ($88) {
             return [text5("start")];
           }
           ;
-          var $87 = isNothing(state3.maybe_currentQuestion) && $$null(state3.futureQuestions);
-          if ($87) {
+          var $89 = isNothing(state3.maybe_currentQuestion) && $$null(state3.futureQuestions);
+          if ($89) {
             return [text5("next")];
           }
           ;
@@ -7016,38 +7115,50 @@
     };
     var handleAction = function(v) {
       if (v instanceof Initialize2) {
-        return bind5(liftEffect7(map18(untranslate)(getName)))(function(name15) {
+        return bind5(bind5(liftEffect7(map18(untranslate)(getName)))(function(name15) {
+          var $91 = $$null2(name15);
+          if ($91) {
+            var names = ["Albert", "Kelly", "Jo", "Bob", "Kim", "Abdul", "Ryan", "Joseph", "Jacob", "Benny"];
+            return bind5(liftEffect7(randomInt(0)(length(names) - 1 | 0)))(function(i2) {
+              return pure9(fromMaybe$prime(function(v1) {
+                return unsafeCrashWith("impossible");
+              })(index(names)(i2)));
+            });
+          }
+          ;
+          return pure9(name15);
+        }))(function(name15) {
           var futureQuestions = getRandomSubset(4)(initialQuestions);
           return modify_3(function(v1) {
-            var $89 = {};
-            for (var $90 in v1) {
-              if ({}.hasOwnProperty.call(v1, $90)) {
-                $89[$90] = v1[$90];
+            var $92 = {};
+            for (var $93 in v1) {
+              if ({}.hasOwnProperty.call(v1, $93)) {
+                $92[$93] = v1[$93];
               }
               ;
             }
             ;
-            $89.name = name15;
-            $89.futureQuestions = map19(function(v2) {
+            $92.name = name15;
+            $92.futureQuestions = map19(function(v2) {
               return new Tuple(v2, Nothing.value);
             })(futureQuestions);
-            return $89;
+            return $92;
           });
         });
       }
       ;
       if (v instanceof SelectAnswer) {
         return modify_3(function(state3) {
-          var $92 = {};
-          for (var $93 in state3) {
-            if ({}.hasOwnProperty.call(state3, $93)) {
-              $92[$93] = state3[$93];
+          var $95 = {};
+          for (var $96 in state3) {
+            if ({}.hasOwnProperty.call(state3, $96)) {
+              $95[$96] = state3[$96];
             }
             ;
           }
           ;
-          $92.maybe_currentQuestion = map23(rmap2($$const(pure9(v.value0))))(state3.maybe_currentQuestion);
-          return $92;
+          $95.maybe_currentQuestion = map23(rmap2($$const(pure13(v.value0))))(state3.maybe_currentQuestion);
+          return $95;
         });
       }
       ;
@@ -7057,30 +7168,30 @@
             if (state3.maybe_currentQuestion instanceof Just) {
               var v1 = unsnoc(state3.pastQuestions);
               if (v1 instanceof Nothing) {
-                return pure13(unit);
+                return pure9(unit);
               }
               ;
               if (v1 instanceof Just) {
                 return modify_3(function(v2) {
-                  var $99 = {};
-                  for (var $100 in v2) {
-                    if ({}.hasOwnProperty.call(v2, $100)) {
-                      $99[$100] = v2[$100];
+                  var $102 = {};
+                  for (var $103 in v2) {
+                    if ({}.hasOwnProperty.call(v2, $103)) {
+                      $102[$103] = v2[$103];
                     }
                     ;
                   }
                   ;
-                  $99.pastQuestions = v1.value0.init;
-                  $99.maybe_currentQuestion = pure9(rmap2(pure9)(v1.value0.last));
-                  $99.futureQuestions = cons(new Tuple(state3.maybe_currentQuestion.value0.value0, state3.maybe_currentQuestion.value0.value1))(state3.futureQuestions);
-                  return $99;
+                  $102.pastQuestions = v1.value0.init;
+                  $102.maybe_currentQuestion = pure13(rmap2(pure13)(v1.value0.last));
+                  $102.futureQuestions = cons(new Tuple(state3.maybe_currentQuestion.value0.value0, state3.maybe_currentQuestion.value0.value1))(state3.futureQuestions);
+                  return $102;
                 });
               }
               ;
-              throw new Error("Failed pattern match at Main (line 87, column 11 - line 95, column 18): " + [v1.constructor.name]);
+              throw new Error("Failed pattern match at Main (line 97, column 11 - line 105, column 18): " + [v1.constructor.name]);
             }
             ;
-            return pure13(unit);
+            return pure9(unit);
           });
         });
       }
@@ -7092,54 +7203,37 @@
               return discard5(log4("here"))(function() {
                 var v12 = uncons(state3.futureQuestions);
                 if (v12 instanceof Nothing) {
-                  return pure13(unit);
+                  return pure9(unit);
                 }
                 ;
                 if (v12 instanceof Just) {
                   return modify_3(function(v2) {
-                    var $111 = {};
-                    for (var $112 in v2) {
-                      if ({}.hasOwnProperty.call(v2, $112)) {
-                        $111[$112] = v2[$112];
+                    var $114 = {};
+                    for (var $115 in v2) {
+                      if ({}.hasOwnProperty.call(v2, $115)) {
+                        $114[$115] = v2[$115];
                       }
                       ;
                     }
                     ;
-                    $111.pastQuestions = state3.pastQuestions;
-                    $111.maybe_currentQuestion = pure9(v12.value0.head);
-                    $111.futureQuestions = v12.value0.tail;
-                    return $111;
+                    $114.pastQuestions = state3.pastQuestions;
+                    $114.maybe_currentQuestion = pure13(v12.value0.head);
+                    $114.futureQuestions = v12.value0.tail;
+                    return $114;
                   });
                 }
                 ;
-                throw new Error("Failed pattern match at Main (line 103, column 11 - line 111, column 18): " + [v12.constructor.name]);
+                throw new Error("Failed pattern match at Main (line 113, column 11 - line 121, column 18): " + [v12.constructor.name]);
               });
             }
             ;
             if (state3.maybe_currentQuestion instanceof Just && state3.maybe_currentQuestion.value0.value1 instanceof Nothing) {
-              return pure13(unit);
+              return pure9(unit);
             }
             ;
             if (state3.maybe_currentQuestion instanceof Just && state3.maybe_currentQuestion.value0.value1 instanceof Just) {
               var v1 = uncons(state3.futureQuestions);
               if (v1 instanceof Nothing) {
-                return modify_3(function(v2) {
-                  var $121 = {};
-                  for (var $122 in v2) {
-                    if ({}.hasOwnProperty.call(v2, $122)) {
-                      $121[$122] = v2[$122];
-                    }
-                    ;
-                  }
-                  ;
-                  $121.pastQuestions = snoc(state3.pastQuestions)(new Tuple(state3.maybe_currentQuestion.value0.value0, state3.maybe_currentQuestion.value0.value1.value0));
-                  $121.maybe_currentQuestion = empty7;
-                  $121.futureQuestions = mempty2;
-                  return $121;
-                });
-              }
-              ;
-              if (v1 instanceof Just) {
                 return modify_3(function(v2) {
                   var $124 = {};
                   for (var $125 in v2) {
@@ -7150,21 +7244,38 @@
                   }
                   ;
                   $124.pastQuestions = snoc(state3.pastQuestions)(new Tuple(state3.maybe_currentQuestion.value0.value0, state3.maybe_currentQuestion.value0.value1.value0));
-                  $124.maybe_currentQuestion = pure9(v1.value0.head);
-                  $124.futureQuestions = v1.value0.tail;
+                  $124.maybe_currentQuestion = empty7;
+                  $124.futureQuestions = mempty2;
                   return $124;
                 });
               }
               ;
-              throw new Error("Failed pattern match at Main (line 115, column 11 - line 127, column 18): " + [v1.constructor.name]);
+              if (v1 instanceof Just) {
+                return modify_3(function(v2) {
+                  var $127 = {};
+                  for (var $128 in v2) {
+                    if ({}.hasOwnProperty.call(v2, $128)) {
+                      $127[$128] = v2[$128];
+                    }
+                    ;
+                  }
+                  ;
+                  $127.pastQuestions = snoc(state3.pastQuestions)(new Tuple(state3.maybe_currentQuestion.value0.value0, state3.maybe_currentQuestion.value0.value1.value0));
+                  $127.maybe_currentQuestion = pure13(v1.value0.head);
+                  $127.futureQuestions = v1.value0.tail;
+                  return $127;
+                });
+              }
+              ;
+              throw new Error("Failed pattern match at Main (line 125, column 11 - line 137, column 18): " + [v1.constructor.name]);
             }
             ;
-            return pure13(unit);
+            return pure9(unit);
           });
         });
       }
       ;
-      throw new Error("Failed pattern match at Main (line 69, column 18 - line 128, column 23): " + [v.constructor.name]);
+      throw new Error("Failed pattern match at Main (line 72, column 18 - line 138, column 23): " + [v.constructor.name]);
     };
     var $$eval = mkEval({
       handleQuery: defaultEval.handleQuery,
