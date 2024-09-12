@@ -138,13 +138,15 @@ component = H.mkComponent { initialState, eval, render }
                 if Array.null state.futureQuestions then
                   [ HH.div [ HP.classes [ HH.ClassName "status" ] ]
                       [ HH.div [] [ HH.text "All done!" ]
-                      , HH.div [] [ HH.text $ "Your name is:" ]
+                      , HH.div [] [ HH.text $ "Your name must be:" ]
                       , HH.div [ HP.classes [ HH.ClassName "name" ] ] [ HH.text $ "\"" <> state.name <> "\"" ]
                       ]
                   ]
                 else
                   [ HH.div [ HP.classes [ HH.ClassName "status" ] ]
-                      [ HH.text "Click \"start\" to start" ]
+                      [ HH.div [] [ HH.text "I will as you a series of 4 questions in order to infer your name." ]
+                      , HH.div [] [ HH.text "Click \"start\" to start" ]
+                      ]
                   ]
               Just (currentQuestion /\ mb_i) ->
                 [ renderQuestion mb_i currentQuestion
