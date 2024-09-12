@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "spago build",
+    "test": "spago test",
+    "bundle": "pnpm spago bundle --module Main --outfile ./docs/main.js",
+    "serve": "vite docs"
   },
   "keywords": [],
   "author": "",
