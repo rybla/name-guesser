@@ -6,7 +6,10 @@
   "scripts": {
     "build": "spago build",
     "test": "spago test",
-    "bundle": "pnpm spago bundle --module Main --outfile ./docs/main.js",
+    "translate": "spago run -m Translation.Main",
+    "bundle.main": "pnpm spago bundle --module Main --outfile ./docs/main.js",
+    "bundle.translate": "pnpm spago bundle --module Translation.App --outfile ./docs/translation/main.js",
+    "bundle": "pnpm bundle.main && pnpm bundle.translate",
     "serve": "vite docs"
   },
   "keywords": [],

@@ -6,14 +6,17 @@ workspace:
         dependencies:
           - arrays
           - console
+          - debug
           - effect
           - halogen
           - lists
           - maybe
+          - node-process
           - prelude
           - transformers
         build_plan:
           - aff
+          - arraybuffer-types
           - arrays
           - avar
           - bifunctors
@@ -23,6 +26,7 @@ workspace:
           - contravariant
           - control
           - datetime
+          - debug
           - distributive
           - dom-indexed
           - effect
@@ -52,6 +56,10 @@ workspace:
           - maybe
           - media-types
           - newtype
+          - node-buffer
+          - node-event-emitter
+          - node-process
+          - node-streams
           - nonempty
           - now
           - nullable
@@ -60,6 +68,7 @@ workspace:
           - orders
           - parallel
           - partial
+          - posix-types
           - prelude
           - profunctor
           - refs
@@ -616,6 +625,11 @@ packages:
       - tailrec
       - transformers
       - unsafe-coerce
+  arraybuffer-types:
+    type: registry
+    version: 3.0.2
+    integrity: sha256-mQKokysYVkooS4uXbO+yovmV/s8b138Ws3zQvOwIHRA=
+    dependencies: []
   arrays:
     type: registry
     version: 7.3.0
@@ -721,6 +735,13 @@ packages:
       - partial
       - prelude
       - tuples
+  debug:
+    type: registry
+    version: 6.0.2
+    integrity: sha256-vmkYFuXYuELBzeauvgHG6E6Kf/Hp1dAnxwE9ByHfwSg=
+    dependencies:
+      - functions
+      - prelude
   distributive:
     type: registry
     version: 6.0.0
@@ -1055,6 +1076,56 @@ packages:
     dependencies:
       - prelude
       - safe-coerce
+  node-buffer:
+    type: registry
+    version: 9.0.0
+    integrity: sha256-PWE2DJ5ruBLCmeA/fUiuySEFmUJ/VuRfyrnCuVZBlu4=
+    dependencies:
+      - arraybuffer-types
+      - effect
+      - maybe
+      - nullable
+      - st
+      - unsafe-coerce
+  node-event-emitter:
+    type: registry
+    version: 3.0.0
+    integrity: sha256-Qw0MjsT4xRH2j2i4K8JmRjcMKnH5z1Cw39t00q4LE4w=
+    dependencies:
+      - effect
+      - either
+      - functions
+      - maybe
+      - nullable
+      - prelude
+      - unsafe-coerce
+  node-process:
+    type: registry
+    version: 11.2.0
+    integrity: sha256-+2MQDYChjGbVbapCyJtuWYwD41jk+BntF/kcOTKBMVs=
+    dependencies:
+      - effect
+      - foreign
+      - foreign-object
+      - maybe
+      - node-event-emitter
+      - node-streams
+      - posix-types
+      - prelude
+      - unsafe-coerce
+  node-streams:
+    type: registry
+    version: 9.0.0
+    integrity: sha256-2n6dq7YWleTDmD1Kur/ul7Cn08IvWrScgPf+0PgX2TQ=
+    dependencies:
+      - aff
+      - effect
+      - either
+      - exceptions
+      - node-buffer
+      - node-event-emitter
+      - nullable
+      - prelude
   nonempty:
     type: registry
     version: 7.0.0
@@ -1132,6 +1203,13 @@ packages:
     version: 4.0.0
     integrity: sha256-fwXerld6Xw1VkReh8yeQsdtLVrjfGiVuC5bA1Wyo/J4=
     dependencies: []
+  posix-types:
+    type: registry
+    version: 6.0.0
+    integrity: sha256-ZfFz8RR1lee/o/Prccyeut3Q+9tYd08mlR72sIh6GzA=
+    dependencies:
+      - maybe
+      - prelude
   prelude:
     type: registry
     version: 6.0.1

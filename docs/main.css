@@ -1,0 +1,97 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.app {
+  width: 400px;
+  height: 100vh;
+  margin: auto;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+
+  font-size: 2em;
+}
+
+.title {
+  font-size: 1.5em;
+  text-align: center;
+  flex-grow: 0;
+}
+
+.status {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  align-items: center;
+}
+
+.name {
+  font-size: 1.5em;
+  background-color: rgb(198, 198, 255);
+  padding: 0.5em;
+  border: 0.2em solid black;
+}
+
+.controls {
+  display: flex;
+  flex-direction: row;
+  gap: 1em;
+  justify-content: space-around;
+  flex-grow: 0;
+}
+
+.control {
+  padding: 0.5em;
+
+  color: white;
+  cursor: pointer;
+
+  user-select: none;
+}
+
+.control:hover {
+  outline: 0.2em solid black;
+}
+
+.control.active {
+  background-color: blue;
+}
+
+.control.inactive {
+  background-color: gray;
+}
+
+.question {}
+
+.prompt {
+  font-style: italic;
+}
+
+.answers {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  align-items: center;
+}
+
+.answer {
+  padding: 0.5em;
+  cursor: pointer;
+  background-color: rgb(205, 205, 205);
+  user-select: none;
+}
+
+.answer:hover {
+  outline: 0.2em solid gray;
+}
+
+.answer.selected,
+.answer.selected:hover {
+  outline: 0.2em solid black;
+  background-color: rgb(179, 215, 255);
+}

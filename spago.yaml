@@ -3,10 +3,12 @@ package:
   dependencies:
     - arrays
     - console
+    - debug
     - effect
     - halogen
     - lists
     - maybe
+    - node-process
     - prelude
     - transformers
   test:
